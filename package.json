@@ -1,0 +1,49 @@
+{
+  "name": "material-ui-data-table",
+  "version": "0.0.1",
+  "main": "index.js",
+  "author": "tony <anthony.kerz@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "ava": "cross-env DEBUG=test:*,app:* ava",
+    "xo": "xo",
+    "pretest": "npm run xo",
+    "test": "npm run ava",
+    "prebuild": "npm run test",
+    "build": "babel ./src -d ./dist"
+  },
+  "dependencies": {
+    "@tony-kerz/react-ultimate-pagination-material-ui": "^1.1.6",
+    "debug": "^3.0.1",
+    "lodash": "^4.17.4"
+  },
+  "devDependencies": {
+    "ava": "^0.22.0",
+    "babel-cli": "^6.22.2",
+    "babel-eslint": "^7.2.3",
+    "babel-preset-env": "^1.1.8",
+    "cross-env": "^5.0.5",
+    "eslint-config-prettier": "^2.4.0",
+    "eslint-config-xo-react": "^0.13.0",
+    "eslint-plugin-prettier": "^2.2.0",
+    "eslint-plugin-react": "^7.3.0",
+    "material-ui": "^1.0.0-beta.9",
+    "prettier": "^1.6.1",
+    "prop-types": "^15.5.10",
+    "react": "^15.6.1",
+    "xo": "^0.18.2"
+  },
+  "xo": {
+    "useEslintrc": true,
+    "extends": "xo-react"
+  },
+  "ava": {
+    "babel": "inherit",
+    "require": ["babel-register", "babel-polyfill"]
+  },
+  "peerDependencies": {
+    "material-ui": "^1.0.0-beta.9",
+    "prop-types": "^15.5.10",
+    "react": "^15.6.1"
+  }
+}
