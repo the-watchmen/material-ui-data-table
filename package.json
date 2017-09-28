@@ -1,5 +1,5 @@
 {
-  "name": "material-ui-data-table",
+  "name": "@watchmen/material-ui-data-table",
   "version": "1.0.6",
   "main": "dist/index.js",
   "author": "tony <anthony.kerz@gmail.com>",
@@ -41,10 +41,7 @@
   },
   "ava": {
     "babel": "inherit",
-    "require": [
-      "babel-register",
-      "babel-polyfill"
-    ]
+    "require": ["babel-register", "babel-polyfill"]
   },
   "peerDependencies": {
     "material-ui": "^1.0.0-beta.9",
