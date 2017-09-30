@@ -13,6 +13,7 @@ const Pager = createUltimatePagination()
 
 const styles = theme => {
   dbg('theme=%o', theme)
+  const space2 = theme.spacing.unit * 2
   return {
     root: {
       display: 'flex',
@@ -24,7 +25,10 @@ const styles = theme => {
     },
     pager: {
       alignSelf: 'center',
-      padding: 10
+      padding: space2
+    },
+    text: {
+      padding: [space2, space2, space2, space2 * 2]
     }
   }
 }
