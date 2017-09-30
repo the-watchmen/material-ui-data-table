@@ -119,7 +119,11 @@ class dataTable extends Component {
           </div>
         </div>
       ) : (
-        noRecordsFound
+        noRecordsFound || (
+          <Typography className={classes.text} type="subheading" gutterBottom>
+            No Results Found
+          </Typography>
+        )
       ))
     )
   }
@@ -140,15 +144,8 @@ class dataTable extends Component {
     }).isRequired,
     columns: PropTypes.array.isRequired,
     classes: PropTypes.object.isRequired,
+    // eslint-disable-next-line react/require-default-props
     noRecordsFound: PropTypes.element
-  }
-
-  static defaultProps = {
-    noRecordsFound: (
-      <Typography type="subheading" gutterBottom>
-        No Results Found
-      </Typography>
-    )
   }
 }
 
