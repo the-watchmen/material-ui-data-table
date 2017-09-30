@@ -1,10 +1,11 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
+import Typography from 'material-ui/Typography'
 import Table, {TableBody, TableCell, TableHead, TableRow, TableSortLabel} from 'material-ui/Table'
 import {withStyles} from 'material-ui/styles'
 import debug from 'debug'
 import _ from 'lodash'
-import createUltimatePagination from '@tony-kerz/react-ultimate-pagination-material-ui'
+import createUltimatePagination from '@watchmen/react-ultimate-pagination-material-ui'
 
 const dbg = debug('lib:material-ui-data-table')
 
@@ -38,72 +39,84 @@ class dataTable extends Component {
 
   render() {
     dbg('render: props=%o', this.props)
-    const {columns, page, classes} = this.props
+    const {columns, page, classes, noRecordsFound} = this.props
     const {query, data} = page
     const sortField = _.get(query, 'sort.field')
     const isAscending = _.get(query, 'sort.isAscending')
 
-    return (
-      <div className={classes.root}>
-        <div className={classes.table}>
-          <Table>
-            <TableHead>
-              <TableRow>
+    const head = (
+      <TableHead>
+        <TableRow>
+          {columns.map(column => {
+            return (
+              <TableCell
+                key={column.id}
+                numeric={column.numeric}
+                disablePadding={column.disablePadding}
+              >
+                <TableSortLabel
+                  active={sortField === column.id}
+                  direction={isAscending ? 'asc' : 'desc'}
+                  onClick={this.getOnSort(column.id)}
+                >
+                  {column.label || column.id}
+                </TableSortLabel>
+              </TableCell>
+            )
+          }, this)}
+        </TableRow>
+      </TableHead>
+    )
+
+    const body = (
+      <TableBody>
+        {data &&
+          data.map(row => {
+            return (
+              <TableRow key={row.ssn}>
                 {columns.map(column => {
                   return (
                     <TableCell
-                      key={column.id}
+                      key={`${row.ssn}:${column.id}`}
                       numeric={column.numeric}
                       disablePadding={column.disablePadding}
                     >
-                      <TableSortLabel
-                        active={sortField === column.id}
-                        direction={isAscending ? 'asc' : 'desc'}
-                        onClick={this.getOnSort(column.id)}
-                      >
-                        {column.label || column.id}
-                      </TableSortLabel>
+                      {row[column.id]}
                     </TableCell>
                   )
-                }, this)}
-              </TableRow>
-            </TableHead>
-
-            <TableBody>
-              {data &&
-                data.map(row => {
-                  return (
-                    <TableRow key={row.ssn}>
-                      {columns.map(column => {
-                        return (
-                          <TableCell
-                            key={`${row.ssn}:${column.id}`}
-                            numeric={column.numeric}
-                            disablePadding={column.disablePadding}
-                          >
-                            {row[column.id]}
-                          </TableCell>
-                        )
-                      })}
-                    </TableRow>
-                  )
                 })}
-            </TableBody>
-          </Table>
+              </TableRow>
+            )
+          })}
+      </TableBody>
+    )
+
+    return (
+      data &&
+      (data.length ? (
+        <div className={classes.root}>
+          <div className={classes.table}>
+            <Table>
+              {head}
+              {body}
+            </Table>
+          </div>
+          <div className={classes.pager}>
+            <Pager
+              currentPage={page.currentPage}
+              totalPages={page.totalPages}
+              boundaryPagesRange={1}
+              siblingPagesRange={1}
+              hidePreviousAndNextPageLinks={false}
+              hideFirstAndLastPageLinks={false}
+              hideEllipsis={false}
+              onChange={this.props.onPage}
+            />
+          </div>
         </div>
-        <div className={classes.pager}>
-          <Pager
-            currentPage={page.currentPage}
-            totalPages={page.totalPages}
-            boundaryPagesRange={1}
-            siblingPagesRange={1}
-            hidePreviousAndNextPageLinks={false}
-            hideFirstAndLastPageLinks={false}
-            hideEllipsis={false}
-            onChange={this.props.onPage}
-          />
-        </div>
-      </div>
+      ) : (
+        noRecordsFound
+      ))
     )
   }
 
@@ -122,7 +135,16 @@ class dataTable extends Component {
       })
     }).isRequired,
     columns: PropTypes.array.isRequired,
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
+    noRecordsFound: PropTypes.element
+  }
+
+  static defaultProps = {
+    noRecordsFound: (
+      <Typography type="subheading" gutterBottom>
+        No Results Found
+      </Typography>
+    )
   }
 }
 
