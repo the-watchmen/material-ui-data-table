@@ -10,14 +10,14 @@
     "pretest": "npm run xo",
     "test": "npm run ava",
     "prebuild": "npm run test",
-    "build": "babel ./src -d ./dist"
+    "build": "babel ./src -d ./dist",
+    "prepare": "install-self-peers -- --ignore-scripts"
   },
   "dependencies": {
-    "@tony-kerz/react-ultimate-pagination-material-ui": "^1.1.6",
-    "debug": "^3.0.1",
-    "lodash": "^4.17.4"
+    "@watchmen/react-ultimate-pagination-material-ui": "^1.1.7"
   },
   "devDependencies": {
+    "@team-griffin/install-self-peers": "^1.1.1",
     "ava": "^0.22.0",
     "babel-cli": "^6.22.2",
     "babel-eslint": "^7.2.3",
@@ -29,10 +29,7 @@
     "eslint-config-xo-react": "^0.13.0",
     "eslint-plugin-prettier": "^2.2.0",
     "eslint-plugin-react": "^7.3.0",
-    "material-ui": "^1.0.0-beta.9",
     "prettier": "^1.6.1",
-    "prop-types": "^15.5.10",
-    "react": "^15.6.1",
     "xo": "^0.18.2"
   },
   "xo": {
@@ -47,6 +44,8 @@
     ]
   },
   "peerDependencies": {
+    "debug": "^3.0.1",
+    "lodash": "^4.17.4",
     "material-ui": "^1.0.0-beta.9",
     "prop-types": "^15.5.10",
     "react": "^15.6.1"

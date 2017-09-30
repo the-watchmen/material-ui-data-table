@@ -11,7 +11,6 @@ module.exports = {
   },
   plugins: ['prettier'],
   rules: {
-    'import/no-unassigned-import': 'off',
     'import/prefer-default-export': 'off',
     'prettier/prettier': [
       'error',
