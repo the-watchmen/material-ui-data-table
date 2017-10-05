@@ -53,11 +53,7 @@ class dataTable extends Component {
         <TableRow>
           {columns.map(column => {
             return (
-              <TableCell
-                key={column.id}
-                numeric={column.numeric}
-                disablePadding={column.disablePadding}
-              >
+              <TableCell key={column.id} numeric={column.numeric} padding={column.padding}>
                 <TableSortLabel
                   active={sortField === column.id}
                   direction={isAscending ? 'asc' : 'desc'}
