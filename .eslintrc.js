@@ -13,6 +13,7 @@ module.exports = {
   rules: {
     'import/prefer-default-export': 'off',
     'react/forbid-component-props': 'off',
+    'react/require-default-props': 'off',
     'prettier/prettier': [
       'error',
       {
