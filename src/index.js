@@ -43,7 +43,7 @@ class dataTable extends Component {
 
   render() {
     dbg('render: props=%o', this.props)
-    const {columns, page, classes, noRecordsFound} = this.props
+    const {columns, page, classes, noRecordsFound, zoomIcon} = this.props
     const {query, data} = page
     const sortField = _.get(query, 'sort.field')
     const isAscending = _.get(query, 'sort.isAscending')
@@ -51,6 +51,7 @@ class dataTable extends Component {
     const head = (
       <TableHead>
         <TableRow>
+          {zoomIcon && <TableCell key={-1} padding="checkbox" />}
           {columns.map(column => {
             return (
               <TableCell key={column.id} numeric={column.numeric} padding={column.padding}>
@@ -74,12 +75,17 @@ class dataTable extends Component {
           data.map(row => {
             return (
               <TableRow key={row.ssn}>
+                {zoomIcon && (
+                  <TableCell key={`${row.ssn}:zoom`} padding="checkbox">
+                    {zoomIcon}
+                  </TableCell>
+                )}
                 {columns.map(column => {
                   return (
                     <TableCell
                       key={`${row.ssn}:${column.id}`}
                       numeric={column.numeric}
-                      disablePadding={column.disablePadding}
+                      padding={column.padding}
                     >
                       {row[column.id]}
                     </TableCell>
@@ -140,8 +146,8 @@ class dataTable extends Component {
     }).isRequired,
     columns: PropTypes.array.isRequired,
     classes: PropTypes.object.isRequired,
-    // eslint-disable-next-line react/require-default-props
-    noRecordsFound: PropTypes.element
+    noRecordsFound: PropTypes.element,
+    zoomIcon: PropTypes.boolean
   }
 }
 
