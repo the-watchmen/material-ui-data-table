@@ -147,7 +147,7 @@ class dataTable extends Component {
     columns: PropTypes.array.isRequired,
     classes: PropTypes.object.isRequired,
     noRecordsFound: PropTypes.element,
-    zoomCell: PropTypes.element
+    zoomCell: PropTypes.function
   }
 }
 
