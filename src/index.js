@@ -43,7 +43,7 @@ class dataTable extends Component {
 
   render() {
     dbg('render: props=%o', this.props)
-    const {columns, page, classes, noRecordsFound, zoomIcon} = this.props
+    const {columns, page, classes, noRecordsFound, zoomCell} = this.props
     const {query, data} = page
     const sortField = _.get(query, 'sort.field')
     const isAscending = _.get(query, 'sort.isAscending')
@@ -51,7 +51,7 @@ class dataTable extends Component {
     const head = (
       <TableHead>
         <TableRow>
-          {zoomIcon && <TableCell key={-1} padding="checkbox" />}
+          {zoomCell && <TableCell key={-1} padding="checkbox" />}
           {columns.map(column => {
             return (
               <TableCell key={column.id} numeric={column.numeric} padding={column.padding}>
@@ -75,9 +75,9 @@ class dataTable extends Component {
           data.map(row => {
             return (
               <TableRow key={row.ssn}>
-                {zoomIcon && (
+                {zoomCell && (
                   <TableCell key={`${row.ssn}:zoom`} padding="checkbox">
-                    {zoomIcon}
+                    {zoomCell(row.id)}
                   </TableCell>
                 )}
                 {columns.map(column => {
@@ -147,7 +147,7 @@ class dataTable extends Component {
     columns: PropTypes.array.isRequired,
     classes: PropTypes.object.isRequired,
     noRecordsFound: PropTypes.element,
-    zoomIcon: PropTypes.boolean
+    zoomCell: PropTypes.element
   }
 }
 
