@@ -74,16 +74,16 @@ class dataTable extends Component {
         {data &&
           data.map(row => {
             return (
-              <TableRow key={row.ssn}>
+              <TableRow key={row.id}>
                 {zoomCell && (
-                  <TableCell key={`${row.ssn}:zoom`} padding="checkbox">
+                  <TableCell key={`${row.id}:zoom`} padding="checkbox">
                     {zoomCell(row.id)}
                   </TableCell>
                 )}
                 {columns.map(column => {
                   return (
                     <TableCell
-                      key={`${row.ssn}:${column.id}`}
+                      key={`${row.id}:${column.id}`}
                       numeric={column.numeric}
                       padding={column.padding}
                     >
