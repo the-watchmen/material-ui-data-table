@@ -61,15 +61,20 @@ class dataTable extends Component {
         <TableRow>
           {zoomCell && <TableCell key={-1} padding="checkbox" />}
           {columns.map(column => {
+            const name = column.label || column.id
             return (
               <TableCell key={column.id} numeric={column.numeric} padding={column.padding}>
-                <TableSortLabel
-                  active={column.sortable !== false && sortField === column.id}
-                  direction={isAscending ? 'asc' : 'desc'}
-                  onClick={this.getOnSort(column.id)}
-                >
-                  {column.label || column.id}
-                </TableSortLabel>
+                {column.unsortable ? (
+                  <div>{name}</div>
+                ) : (
+                  <TableSortLabel
+                    active={column.sortable !== false && sortField === column.id}
+                    direction={isAscending ? 'asc' : 'desc'}
+                    onClick={this.getOnSort(column.id)}
+                  >
+                    {name}
+                  </TableSortLabel>
+                )}
               </TableCell>
             )
           }, this)}
