@@ -14,6 +14,7 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'react/forbid-component-props': 'off',
     'react/require-default-props': 'off',
+    'react/destructuring-assignment': 'off',
     'prettier/prettier': [
       'error',
       {

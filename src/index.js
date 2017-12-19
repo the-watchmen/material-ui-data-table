@@ -5,6 +5,7 @@ import Table, {TableBody, TableCell, TableHead, TableRow, TableSortLabel} from '
 import {withStyles} from 'material-ui/styles'
 import debug from 'debug'
 import _ from 'lodash'
+import {stringify} from '@watchmen/helpr'
 import createUltimatePagination from '@watchmen/react-ultimate-pagination-material-ui'
 
 const dbg = debug('lib:material-ui-data-table')
@@ -33,6 +34,12 @@ const styles = theme => {
   }
 }
 
+function renderColumn({column, row, meta}) {
+  dbg('render-column: column=%o, row=%o, meta=%o', column, row, meta)
+  const value = _.get(row, column.id)
+  return column.render ? column.render({row, column, value, meta}) : value
+}
+
 class dataTable extends Component {
   getOnSort = field => () => {
     const {sort} = this.props.page.query
@@ -43,7 +50,8 @@ class dataTable extends Component {
 
   render() {
     dbg('render: props=%o', this.props)
-    const {columns, page, classes, noRecordsFound, zoomCell} = this.props
+    const {columns, page, classes, noRecordsFound, zoomCell, meta} = this.props
+    const idField = columns[0].id
     const {query, data} = page
     const sortField = _.get(query, 'sort.field')
     const isAscending = _.get(query, 'sort.isAscending')
@@ -56,7 +64,7 @@ class dataTable extends Component {
             return (
               <TableCell key={column.id} numeric={column.numeric} padding={column.padding}>
                 <TableSortLabel
-                  active={sortField === column.id}
+                  active={column.sortable !== false && sortField === column.id}
                   direction={isAscending ? 'asc' : 'desc'}
                   onClick={this.getOnSort(column.id)}
                 >
@@ -73,21 +81,25 @@ class dataTable extends Component {
       <TableBody>
         {data &&
           data.map(row => {
+            const id = row[idField]
+            if (!id) {
+              throw new Error(`id-field=${idField} required for row=${stringify(row)}`)
+            }
             return (
-              <TableRow key={row.id}>
+              <TableRow key={id}>
                 {zoomCell && (
-                  <TableCell key={`${row.id}:zoom`} padding="checkbox">
-                    {zoomCell(row.id)}
+                  <TableCell key={`${id}:zoom`} padding="checkbox">
+                    {zoomCell(id)}
                   </TableCell>
                 )}
                 {columns.map(column => {
                   return (
                     <TableCell
-                      key={`${row.id}:${column.id}`}
+                      key={`${id}:${column.id}`}
                       numeric={column.numeric}
                       padding={column.padding}
                     >
-                      {row[column.id]}
+                      {renderColumn({row, column, meta})}
                     </TableCell>
                   )
                 })}
@@ -147,7 +159,8 @@ class dataTable extends Component {
     columns: PropTypes.array.isRequired,
     classes: PropTypes.object.isRequired,
     noRecordsFound: PropTypes.element,
-    zoomCell: PropTypes.function
+    zoomCell: PropTypes.func,
+    meta: PropTypes.object
   }
 }
 
