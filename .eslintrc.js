@@ -1,15 +1,14 @@
 module.exports = {
-  extends: ['eslint:recommended', 'prettier', 'prettier/react'],
+  extends: ['eslint:recommended', 'xo-react', 'prettier', 'prettier/react'],
   parser: 'babel-eslint',
-  env: {
-    es6: true,
-    browser: true
+  parserOptions: {
+    ecmaVersion: 6,
+    sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true
+    }
   },
-  ecmaFeatures: {
-    modules: true,
-    jsx: true
-  },
-  plugins: ['prettier'],
+  plugins: ['prettier', 'react'],
   rules: {
     'import/prefer-default-export': 'off',
     'react/forbid-component-props': 'off',

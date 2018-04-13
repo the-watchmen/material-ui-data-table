@@ -41,6 +41,8 @@ function renderColumn({column, row, meta}) {
 }
 
 class dataTable extends Component {
+  // https://github.com/babel/babel-eslint/issues/487
+  // eslint-disable-next-line no-undef
   getOnSort = field => () => {
     const {sort} = this.props.page.query
     const isAscending = sort.field === field && sort.isAscending ? false : true
@@ -50,8 +52,8 @@ class dataTable extends Component {
 
   render() {
     dbg('render: props=%o', this.props)
-    const {columns, page, classes, noRecordsFound, zoomCell, meta} = this.props
-    const idField = columns[0].id
+    const {columns, page, classes, noRecordsFound, zoomCell, meta, idField} = this.props
+    const _idField = idField || columns[0].id
     const {query, data} = page
     const sortField = _.get(query, 'sort.field')
     const isAscending = _.get(query, 'sort.isAscending')
@@ -61,15 +63,20 @@ class dataTable extends Component {
         <TableRow>
           {zoomCell && <TableCell key={-1} padding="checkbox" />}
           {columns.map(column => {
+            const name = column.label || column.id
             return (
               <TableCell key={column.id} numeric={column.numeric} padding={column.padding}>
-                <TableSortLabel
-                  active={column.sortable !== false && sortField === column.id}
-                  direction={isAscending ? 'asc' : 'desc'}
-                  onClick={this.getOnSort(column.id)}
-                >
-                  {column.label || column.id}
-                </TableSortLabel>
+                {column.unsortable ? (
+                  <div>{name}</div>
+                ) : (
+                  <TableSortLabel
+                    active={column.sortable !== false && sortField === column.id}
+                    direction={isAscending ? 'asc' : 'desc'}
+                    onClick={this.getOnSort(column.id)}
+                  >
+                    {name}
+                  </TableSortLabel>
+                )}
               </TableCell>
             )
           }, this)}
@@ -81,7 +88,7 @@ class dataTable extends Component {
       <TableBody>
         {data &&
           data.map(row => {
-            const id = row[idField]
+            const id = row[_idField]
             if (!id) {
               throw new Error(`id-field=${idField} required for row=${stringify(row)}`)
             }
@@ -142,6 +149,8 @@ class dataTable extends Component {
     )
   }
 
+  // https://github.com/babel/babel-eslint/issues/487
+  // eslint-disable-next-line no-undef
   static propTypes = {
     onSort: PropTypes.func.isRequired,
     onPage: PropTypes.func.isRequired,
@@ -160,7 +169,8 @@ class dataTable extends Component {
     classes: PropTypes.object.isRequired,
     noRecordsFound: PropTypes.element,
     zoomCell: PropTypes.func,
-    meta: PropTypes.object
+    meta: PropTypes.object,
+    idField: PropTypes.string
   }
 }
 
