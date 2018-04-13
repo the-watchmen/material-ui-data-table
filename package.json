@@ -1,6 +1,6 @@
 {
   "name": "@watchmen/material-ui-data-table",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "main": "dist/index.js",
   "author": "tony <anthony.kerz@gmail.com>",
   "license": "MIT",
