@@ -1,9 +1,10 @@
 {
   "name": "@watchmen/material-ui-data-table",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "main": "dist/index.js",
   "author": "tony <anthony.kerz@gmail.com>",
   "license": "MIT",
+  "repository": "the-watchmen/material-ui-data-table",
   "scripts": {
     "ava": "cross-env DEBUG=test:*,app:* ava",
     "xo": "xo",
